@@ -4,6 +4,10 @@
   "description": "Manage and control a timeliner with many layers",
   "main": "index.js",
   "scripts": {
+    "build": "node_modules/.bin/babel src --out-dir dist",
+    "watch": "node_modules/.bin/webpack --watch",
+    "start": "node_modules/.bin/webpack-dev-server",
+    "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,6 +19,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/funkymed/timeliner.git"
+  },
+  "dependencies": {
+    "react": "^15.5.4",
+    "react-overlays": "^0.7.0"
   },
   "author": "Cyril Pereira",
   "license": "ISC",
