@@ -1,5 +1,5 @@
 {
-  "name": "@funkymed/timeliner",
+  "name": "funkymed/timeliner",
   "version": "1.0.0",
   "description": "Manage and control a timeliner with many layers",
   "main": "index.js",
