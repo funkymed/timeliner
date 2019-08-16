@@ -1,0 +1,25 @@
+{
+  "name": "@funkymed/timeliner",
+  "version": "1.0.0",
+  "description": "Manage and control a timeliner with many layers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "layer",
+    "control",
+    "visualization",
+    "funkymed"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funkymed/timeliner.git"
+  },
+  "author": "Cyril Pereira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/funkymed/timeliner/issues"
+  },
+  "homepage": "https://github.com/funkymed/timeliner#readme"
+}
