@@ -3,7 +3,7 @@ import Scenario from './Scenario'
 import Moment from 'react-moment';
 import 'moment-timezone';
 import * as moment from 'moment';
-import Scene from './Scene'
+import Tools from './Tools'
 
 export default class Timeline extends Component {
     constructor(props) {
@@ -65,19 +65,6 @@ export default class Timeline extends Component {
         }
     }
 
-    hhmmss(secs) {
-        var minutes = Math.floor(secs / 60);
-        secs = secs%60;
-        var hours = Math.floor(minutes/60)
-        minutes = minutes%60;
-        return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(secs)}`;
-        // return pad(hours)+":"+pad(minutes)+":"+pad(secs); for old browsers
-    }
-
-    pad(num) {
-        return ("0"+num).slice(-2);
-    }
-
     componentDidMount() {
         var d = document;
         var containerTimeline = d.createElement('div');
@@ -107,7 +94,7 @@ export default class Timeline extends Component {
 
         var displayTime = this.props.currentTime >= this.state.endTime ? this.state.endTime : this.props.currentTime;
 
-        itemName.appendChild(document.createTextNode(`time [${this.hhmmss(displayTime)}]`));
+        itemName.appendChild(document.createTextNode(`Timecode : ${Tools.hhmmss(displayTime)}`));
         itemName.style.height = (blockH - 4) + "px";
         itemName.style.paddingTop = "4px";
         itemName.style.paddingLeft = "4px";
@@ -133,7 +120,7 @@ export default class Timeline extends Component {
         for (var tt = 0; tt <= this.state.endTime; tt += Math.ceil(this.state.endTime/10)) {
             var item = d.createElement('div');
 
-            item.appendChild(document.createTextNode("| " + this.hhmmss(tt)));
+            item.appendChild(document.createTextNode("| " + Tools.hhmmss(tt)));
             item.style.paddingTop = "4px";
             item.style.paddingLeft = "4px";
             item.style.display = "inline-block";
@@ -163,7 +150,7 @@ export default class Timeline extends Component {
             for (const i of this.timelineItems[c]) {
 
                 var item = d.createElement('div');
-                item.appendChild(document.createTextNode(this.hhmmss(i.start)));
+                item.appendChild(document.createTextNode(Tools.hhmmss(i.start)));
 
                 /*color block*/
                 if(this.state.options.groupcolors && this.state.options.groupcolors[c]){

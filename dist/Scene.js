@@ -2,13 +2,13 @@
 
 exports.__esModule = true;
 
-var _Timeline = require("./Timeline");
-
-var _Timeline2 = _interopRequireDefault(_Timeline);
-
 var _uniqueHash = require("unique-hash");
 
 var _uniqueHash2 = _interopRequireDefault(_uniqueHash);
+
+var _Tools = require("./Tools");
+
+var _Tools2 = _interopRequireDefault(_Tools);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20,6 +20,7 @@ var Scene = function () {
 
         this.params = params;
         this.params.enabled = this.params.enabled ? this.params.enabled : true;
+        this.params.timecode = _Tools2.default.hhmmss(this.params.start);
         this.data = this.params.data ? this.params.data : {};
         this.passed = false;
         if (this.params.data) {
@@ -47,19 +48,6 @@ var Scene = function () {
     Scene.prototype.getName = function getName() {
         return this.name = name ? name : this.id;
     };
-
-    Scene.prototype.generateUid = function generateUid(separator) {
-        var delim = separator || "-";
-        function S4() {
-            return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
-        }
-        return S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4();
-    };
-
-    /**
-     * use Callback to fireevent when the timeline hit the start time
-     */
-
 
     Scene.prototype.callback = function callback(scene) {};
 

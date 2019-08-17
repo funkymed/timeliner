@@ -1,10 +1,11 @@
-import Timeline from "./Timeline";
 import uniqueHash from "unique-hash"
+import Tools from './Tools'
 
 export default class Scene {
     constructor(params) {
         this.params = params;
         this.params.enabled = this.params.enabled ? this.params.enabled : true;
+        this.params.timecode = Tools.hhmmss(this.params.start);
         this.data = this.params.data ? this.params.data : {};
         this.passed = false;
         if (this.params.data) {
@@ -33,18 +34,6 @@ export default class Scene {
         return this.name = name ? name : this.id;
     }
 
-    generateUid(separator) {
-        var delim = separator || "-";
-        function S4() {
-            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-        }
-        return (S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4());
-    }
-
-
-    /**
-     * use Callback to fireevent when the timeline hit the start time
-     */
     callback(scene) {
     };
 }

@@ -20,9 +20,9 @@ var _moment = require('moment');
 
 var moment = _interopRequireWildcard(_moment);
 
-var _Scene = require('./Scene');
+var _Tools = require('./Tools');
 
-var _Scene2 = _interopRequireDefault(_Scene);
+var _Tools2 = _interopRequireDefault(_Tools);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -98,19 +98,6 @@ var Timeline = function (_Component) {
         };
     };
 
-    Timeline.prototype.hhmmss = function hhmmss(secs) {
-        var minutes = Math.floor(secs / 60);
-        secs = secs % 60;
-        var hours = Math.floor(minutes / 60);
-        minutes = minutes % 60;
-        return this.pad(hours) + ':' + this.pad(minutes) + ':' + this.pad(secs);
-        // return pad(hours)+":"+pad(minutes)+":"+pad(secs); for old browsers
-    };
-
-    Timeline.prototype.pad = function pad(num) {
-        return ("0" + num).slice(-2);
-    };
-
     Timeline.prototype.componentDidMount = function componentDidMount() {
         var d = document;
         var containerTimeline = d.createElement('div');
@@ -140,7 +127,7 @@ var Timeline = function (_Component) {
 
         var displayTime = this.props.currentTime >= this.state.endTime ? this.state.endTime : this.props.currentTime;
 
-        itemName.appendChild(document.createTextNode('time [' + this.hhmmss(displayTime) + ']'));
+        itemName.appendChild(document.createTextNode('Timecode : ' + _Tools2.default.hhmmss(displayTime)));
         itemName.style.height = blockH - 4 + "px";
         itemName.style.paddingTop = "4px";
         itemName.style.paddingLeft = "4px";
@@ -165,7 +152,7 @@ var Timeline = function (_Component) {
         for (var tt = 0; tt <= this.state.endTime; tt += Math.ceil(this.state.endTime / 10)) {
             var item = d.createElement('div');
 
-            item.appendChild(document.createTextNode("| " + this.hhmmss(tt)));
+            item.appendChild(document.createTextNode("| " + _Tools2.default.hhmmss(tt)));
             item.style.paddingTop = "4px";
             item.style.paddingLeft = "4px";
             item.style.display = "inline-block";
@@ -208,7 +195,7 @@ var Timeline = function (_Component) {
 
 
                 var item = d.createElement('div');
-                item.appendChild(document.createTextNode(this.hhmmss(i.start)));
+                item.appendChild(document.createTextNode(_Tools2.default.hhmmss(i.start)));
 
                 /*color block*/
                 if (this.state.options.groupcolors && this.state.options.groupcolors[c]) {
