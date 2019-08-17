@@ -7,7 +7,6 @@ export default class Scene {
         this.params.enabled = this.params.enabled ? this.params.enabled : true;
         this.params.timecode = Tools.hhmmss(this.params.start);
         this.data = this.params.data ? this.params.data : {};
-        this.passed = false;
         if (this.params.data) {
             delete this.params.data;
         }

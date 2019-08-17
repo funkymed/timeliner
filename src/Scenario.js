@@ -21,12 +21,12 @@ export default class Scenario {
         this.params.timer = timer;
         for(const b in this.scenes){
             var scene = this.scenes[b];
-            if (timer >= scene.params.start && timer < scene.params.end && scene.params.enabled && !this.scenes[b].passed) {
+            if (timer >= scene.params.start && timer < scene.params.end && scene.params.enabled) {
                 scene.callback(scene);
-                delete this.scenes[b];
             }
         }
-    };
+    }
+
     updateEndTime(time) {
         this.params.endTime=time;
     }
