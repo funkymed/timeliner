@@ -16,17 +16,18 @@ export default class Scenario {
         this.params.startTime = time;
     }
 
-    removeScene(scene) {
-    }
-
-    disableType(type) {
+    removeScene(sceneToDelete) {
+        var index = this.params.scenes.indexOf(sceneToDelete);
+        if (index > -1) {
+            this.params.scenes.splice(index, 1);
+        }
     }
 
     check(timer) {
         this.params.timer = timer;
         this.params.scenes.forEach(function (scene) {
             if (timer >= scene.start && (scene.end && timer < scene.end) && scene.enabled) {
-                scene.callback();
+                scene.callback(scene);
             }
         });
     };

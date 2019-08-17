@@ -8,11 +8,11 @@ import Scene from './Scene'
 export default class Timeline extends Component {
     constructor(props) {
         super(props);
-        this.state = {startTime: this.props.startTime};
-        this.startTime = this.props.startTime;
+        this.state = {data: this.props.data};
+        this.startTime = this.state.startTime;
         this.currentTime = this.startTime;
         var scenario = new Scenario(this.startTime);
-        for (const data of this.props.data) {
+        for (const data of this.state.data.scenes) {
             scenario.add(new Scene(data));
         }
     }

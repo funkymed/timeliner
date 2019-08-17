@@ -7,6 +7,9 @@ export default class Scene {
             ...params,
             id: this.generateUid(),
             enabled: true,
+            start: 0,
+            end: 0,
+            data: {}
         };
         if (this.params.callback) {
             this.callback = this.params.callback;
@@ -38,6 +41,6 @@ export default class Scene {
     /**
      * use Callback to fireevent when the timeline hit the start time
      */
-    callback() {
+    callback(scene) {
     };
 }
