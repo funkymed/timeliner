@@ -1,54 +1,53 @@
 import React, {Component, PropTypes} from 'react'
 import Scenario from './Scenario'
+import Moment from 'react-moment';
+import 'moment-timezone';
+import * as moment from 'moment';
 import Scene from './Scene'
 
-export default class Timeline extends Component
-{
+export default class Timeline extends Component {
     constructor(props) {
         super(props);
-        this.state = {date: new Date()};
-        var timelineScenes = [];
-        this.props.data.forEach(function(data)
-        {
-            timelineScenes.push(new Scene(data));
-        });
+        this.state = {startTime: this.props.startTime};
+        this.startTime = this.props.startTime;
+        this.currentTime = this.startTime;
+        var scenario = new Scenario(this.startTime);
+        for (const data of this.props.data) {
+            scenario.add(new Scene(data));
+        }
     }
 
-    componentDidMount() {
-
+    checker() {
+        requestAnimationFrame(this.checker);
+        this.scenario.check(timer);
     }
 
-    componentWillUnmount() {
-
-    }
-
-    setScenario (scenario: Scenario) {
+    setScenario(scenario) {
     }
 
     clearSenario() {
     }
 
-    addSceneToGroup(group: Group, scene: Scene) {
+    addSceneToGroup(group, scene) {
     }
 
-    removeScene(scene: Scene) {
+    removeScene(scene) {
     }
 
-    seekTo (time) {
+    seekTo(time) {
+        this.currentTime = this.startTime + time;
     }
 
-    render()
-    {
+    render() {
         const {
-            scenario
+            startTime
         } = this.props;
 
         /**
          * Display the timline
          */
         return (
-            this.props.data.forEach(function(data)
-            {
+            this.props.data.forEach(function (data) {
                 console.log(data);
             })
         );

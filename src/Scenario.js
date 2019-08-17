@@ -1,45 +1,43 @@
 import Scene from './Scene'
 
-export default class Scenario
-{
-    constructor(){
-        this.offset = -1;
-        this.scenes = [];
-        this.timer=0;
-        this.startTime = json.start;
+export default class Scenario {
+    constructor(params) {
+        this.params = {
+            ...params,
+            offset: -1,
+            scenes: [],
+            timer: 0,
+            startTime: 0,
+        };
+        this.start(this.params.startTime);
     }
 
-    startTime(time){
-        this.startTime = time;
+    start(time) {
+        this.params.startTime = time;
     }
 
-    removeScene(scene: Scene){
+    removeScene(scene) {
     }
 
-    disableType(type){
+    disableType(type) {
     }
 
-    check(timer)
-    {
-      this.timer = timer;
-      this.scenes.forEach(function(scene: Scene)
-      {
-        if(timer>= scene.start && (scene.end && timer< scene.end) && scene.enabled)
-        {
-            scene.callback();
-        }
-      });
+    check(timer) {
+        this.params.timer = timer;
+        this.params.scenes.forEach(function (scene) {
+            if (timer >= scene.start && (scene.end && timer < scene.end) && scene.enabled) {
+                scene.callback();
+            }
+        });
     };
 
-    seekTo(time)
-    {
+    seekTo(time) {
         //audio.currentTime=time;
-        this.startTime=time;
+        this.params.startTime = time;
         this.check(time);
     }
 
-    add(scene: Scene)
-    {
-        this.scenes.push(scene);
+    addScene(scene) {
+        this.params.scenes.push(scene);
     }
 }
