@@ -137,7 +137,10 @@ var Timeline = function (_Component) {
         containerTimeline.appendChild(blockDuration);
 
         var itemName = d.createElement('div');
-        itemName.appendChild(document.createTextNode("time"));
+
+        var displayTime = this.props.currentTime >= this.state.endTime ? this.state.endTime : this.props.currentTime;
+
+        itemName.appendChild(document.createTextNode('time [' + this.hhmmss(displayTime) + ']'));
         itemName.style.height = blockH - 4 + "px";
         itemName.style.paddingTop = "4px";
         itemName.style.paddingLeft = "4px";

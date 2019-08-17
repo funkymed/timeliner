@@ -22,14 +22,14 @@ class Example extends Component
             },
             scenes: [
                 {start: 0, end: 60, type: "slider", data: {a: 1, b: 2}},
-                {start: 60, end: 120, type: "slider", data: {}},
+                {start: 60, end: 120, type: "title", data: {a: 1, b: 2}},
                 {start: 120, end: 180, type: "slider", data: {}},
-                {start: 0, end: 60, type: "title", data: {a: 1, b: 2}},
-                {start: 60, end: 120, type: "title", data: {}},
-                {start: 120, end: 180, type: "chat", data: {}},
-                {start: 220, end: 280, type: "chat", data: {}},
-                {start: 0, end: 60, type: "survey", data: {}},
-                {start: 60, end: 120, type: "survey", data: {}},
+                {start: 180, end: 220, type: "chat", data: {}},
+                {start: 220, end: 280, type: "slider", data: {}},
+                {start: 280, end: 320, type: "title", data: {}},
+                {start: 320, end: 380, type: "survey", data: {}},
+                {start: 380, end: 420, type: "chat", data: {}},
+                {start: 420, end: 480, type: "survey", data: {}},
             ]
         };
         this.fired = [];
@@ -63,6 +63,7 @@ class Example extends Component
     callback(data){
         if(!this.fired[data.hash]){
             this.fired[data.hash]=true;
+            console.log(data);
         }
     }
 
