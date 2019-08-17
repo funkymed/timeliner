@@ -2,8 +2,6 @@
 
 exports.__esModule = true;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _Scene = require('./Scene');
 
 var _Scene2 = _interopRequireDefault(_Scene);
@@ -13,46 +11,52 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Scenario = function () {
-    function Scenario(params) {
+    function Scenario(startTime) {
         _classCallCheck(this, Scenario);
 
-        this.params = _extends({}, params, {
+        this.params = {
             offset: -1,
-            scenes: [],
             timer: 0,
-            startTime: 0
-        });
-        this.start(this.params.startTime);
+            startTime: startTime,
+            currentTime: startTime,
+            endTime: startTime
+        };
+        this.scenes = [];
     }
 
-    Scenario.prototype.start = function start(time) {
-        this.params.startTime = time;
-    };
-
     Scenario.prototype.removeScene = function removeScene(sceneToDelete) {
-        var index = this.params.scenes.indexOf(sceneToDelete);
+        var index = this.scenes.indexOf(sceneToDelete);
         if (index > -1) {
-            this.params.scenes.splice(index, 1);
+            this.scenes.splice(index, 1);
         }
     };
 
     Scenario.prototype.check = function check(timer) {
         this.params.timer = timer;
-        this.params.scenes.forEach(function (scene) {
+        for (var scene in this.scenes) {
             if (timer >= scene.start && scene.end && timer < scene.end && scene.enabled) {
                 scene.callback(scene);
             }
-        });
+        }
+    };
+
+    Scenario.prototype.updateEndTime = function updateEndTime(time) {
+        this.params.endTime = time;
     };
 
     Scenario.prototype.seekTo = function seekTo(time) {
-        //audio.currentTime=time;
-        this.params.startTime = time;
+        this.params.currentTime = time;
         this.check(time);
     };
 
-    Scenario.prototype.addScene = function addScene(scene) {
-        this.params.scenes.push(scene);
+    Scenario.prototype.getType = function getType() {
+        return this.data.type;
+    };
+
+    Scenario.prototype.add = function add(scene) {
+        var s = new _Scene2.default(scene);
+        this.scenes.push(s);
+        return s;
     };
 
     return Scenario;

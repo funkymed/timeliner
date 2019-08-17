@@ -2,15 +2,9 @@
 
 exports.__esModule = true;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _Timeline = require("./Timeline");
 
 var _Timeline2 = _interopRequireDefault(_Timeline);
-
-var _Type = require("./Type");
-
-var _Type2 = _interopRequireDefault(_Type);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20,20 +14,25 @@ var Scene = function () {
     function Scene(params) {
         _classCallCheck(this, Scene);
 
-        this.params = _extends({}, params, {
-            id: this.generateUid(),
-            enabled: true,
-            start: 0,
-            end: 0,
-            data: {}
-        });
+        this.params = params;
+        this.params.enabled = this.params.enabled ? this.params.enabled : true;
+        this.data = this.params.data ? this.params.data : {};
+        if (this.params.data) {
+            delete this.params.data;
+        }
         if (this.params.callback) {
             this.callback = this.params.callback;
+            delete this.params.callback;
         }
+        this.id = this.generateUid();
     }
 
     Scene.prototype.getType = function getType() {
-        return this.params.type ? this.params.type : TypeDefault;
+        return this.params.type ? this.params.type : "default";
+    };
+
+    Scene.prototype.getEnd = function getEnd() {
+        return this.params.end;
     };
 
     Scene.prototype.enable = function enable(enabled) {
@@ -46,11 +45,9 @@ var Scene = function () {
 
     Scene.prototype.generateUid = function generateUid(separator) {
         var delim = separator || "-";
-
         function S4() {
             return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
         }
-
         return S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4();
     };
 

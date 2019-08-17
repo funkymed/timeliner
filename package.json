@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "node_modules/.bin/babel src --out-dir dist",
-    "watch": "node_modules/.bin/webpack --watch",
-    "start": "node_modules/.bin/webpack-dev-server",
+    "watch": "node_modules/.bin/webpack src --watch",
+    "start": "node_modules/.bin/webpack-dev-server --port 3000",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/tslint assets/js/**/*.{ts,tsx}"
