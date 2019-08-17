@@ -17,6 +17,7 @@ var Scene = function () {
         this.params = params;
         this.params.enabled = this.params.enabled ? this.params.enabled : true;
         this.data = this.params.data ? this.params.data : {};
+        this.passed = false;
         if (this.params.data) {
             delete this.params.data;
         }
@@ -25,6 +26,7 @@ var Scene = function () {
             delete this.params.callback;
         }
         this.id = this.generateUid();
+        this.hash = this.params.start + "-" + this.params.type + "-" + this.params.end;
     }
 
     Scene.prototype.getType = function getType() {

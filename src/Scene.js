@@ -5,6 +5,7 @@ export default class Scene {
         this.params = params;
         this.params.enabled = this.params.enabled ? this.params.enabled : true;
         this.data = this.params.data ? this.params.data : {};
+        this.passed = false;
         if (this.params.data) {
             delete this.params.data;
         }
@@ -13,6 +14,7 @@ export default class Scene {
             delete this.params.callback;
         }
         this.id = this.generateUid();
+        this.hash = this.params.start+"-"+this.params.type+"-"+this.params.end;
     }
 
     getType() {
@@ -38,6 +40,7 @@ export default class Scene {
         }
         return (S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4());
     }
+
 
     /**
      * use Callback to fireevent when the timeline hit the start time

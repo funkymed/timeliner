@@ -10,20 +10,16 @@ export default class Timeline extends Component {
         super(props);
 
         this.state = {
-            currentTime: this.props.data.currentTime ? this.props.data.currentTime : 0,
+            currentTime: this.props.currentTime ? this.props.currentTime : 0,
+            isplaying: this.props.isplaying ? this.props.isplaying : false,
             startTime: this.props.data.startTime,
             scenes: this.props.data.scenes,
             endTime: this.props.data.startTime,
             options: this.props.data.options ? this.props.data.options : false
         };
         this.callback = this.props.scene_callback ? this.props.scene_callback : false;
-
     }
 
-    checker() {
-        requestAnimationFrame(this.checker);
-        this.scenario.check(timer);
-    }
 
     setScenes(scenes) {
         this.state.scenes = scenes;
@@ -44,7 +40,7 @@ export default class Timeline extends Component {
     }
 
     seekTo(time) {
-        this.currentTime = this.startTime + time;
+        this.state.currentTime = this.startTime + time;
     }
 
     /**
@@ -67,6 +63,19 @@ export default class Timeline extends Component {
                 return a[property].localeCompare(b[property]);
             }
         }
+    }
+
+    hhmmss(secs) {
+        var minutes = Math.floor(secs / 60);
+        secs = secs%60;
+        var hours = Math.floor(minutes/60)
+        minutes = minutes%60;
+        return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(secs)}`;
+        // return pad(hours)+":"+pad(minutes)+":"+pad(secs); for old browsers
+    }
+
+    pad(num) {
+        return ("0"+num).slice(-2);
     }
 
     componentDidMount() {
@@ -118,9 +127,10 @@ export default class Timeline extends Component {
 
 
         //175 = this.state.endTime = 5
-        for (var tt = 0; tt <= this.state.endTime; tt += 5) {
+        for (var tt = 0; tt <= this.state.endTime; tt += Math.ceil(this.state.endTime/10)) {
             var item = d.createElement('div');
-            item.appendChild(document.createTextNode("| " + tt));
+
+            item.appendChild(document.createTextNode("| " + this.hhmmss(tt)));
             item.style.paddingTop = "4px";
             item.style.paddingLeft = "4px";
             item.style.display = "inline-block";
@@ -150,7 +160,7 @@ export default class Timeline extends Component {
             for (const i of this.timelineItems[c]) {
 
                 var item = d.createElement('div');
-                item.appendChild(document.createTextNode(i.start));
+                item.appendChild(document.createTextNode(this.hhmmss(i.start)));
 
                 /*color block*/
                 if(this.state.options.groupcolors && this.state.options.groupcolors[c]){
@@ -189,11 +199,14 @@ export default class Timeline extends Component {
         containerTimeline.appendChild(cursorTimeline);
         blockDuration.style.height=blockH*l+"px";
 
-        var cursorOfsset = ((this.state.currentTime/this.state.endTime)*90)+10;
+        var timer = this.props.currentTime>this.state.endTime ? this.state.endTime : this.props.currentTime;
+
+        var cursorOfsset = ((timer/this.state.endTime)*90)+10;
         cursorTimeline.style.left = cursorOfsset+"%";
 
         const container = document.getElementById("funkymed-timeline");
         container.appendChild(containerTimeline);
+
     }
 
     componentDidUpdate() {
@@ -231,6 +244,11 @@ export default class Timeline extends Component {
                 this.scenario.updateEndTime(this.state.endTime);
             }
         }
+
+        if(this.props.isplaying){
+            this.scenario.check(this.props.currentTime);
+        }
+
         return (
             <div id="funkymed-timeline"></div>
         )

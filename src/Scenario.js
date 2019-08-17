@@ -3,10 +3,8 @@ import Scene from './Scene'
 export default class Scenario {
     constructor(startTime) {
         this.params = {
-            offset: -1,
-            timer: 0,
+            timer: startTime,
             startTime: startTime,
-            currentTime: startTime,
             endTime: startTime
         };
         this.scenes= [];
@@ -21,9 +19,11 @@ export default class Scenario {
 
     check(timer) {
         this.params.timer = timer;
-        for(const scene in this.scenes){
-            if (timer >= scene.start && (scene.end && timer < scene.end) && scene.enabled) {
+        for(const b in this.scenes){
+            var scene = this.scenes[b];
+            if (timer >= scene.params.start && timer < scene.params.end && scene.params.enabled && !this.scenes[b].passed) {
                 scene.callback(scene);
+                delete this.scenes[b];
             }
         }
     };

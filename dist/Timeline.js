@@ -43,21 +43,16 @@ var Timeline = function (_Component) {
         var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
         _this.state = {
-            currentTime: _this.props.data.currentTime ? _this.props.data.currentTime : 0,
+            currentTime: _this.props.currentTime ? _this.props.currentTime : 0,
+            isplaying: _this.props.isplaying ? _this.props.isplaying : false,
             startTime: _this.props.data.startTime,
             scenes: _this.props.data.scenes,
             endTime: _this.props.data.startTime,
             options: _this.props.data.options ? _this.props.data.options : false
         };
         _this.callback = _this.props.scene_callback ? _this.props.scene_callback : false;
-
         return _this;
     }
-
-    Timeline.prototype.checker = function checker() {
-        requestAnimationFrame(this.checker);
-        this.scenario.check(timer);
-    };
 
     Timeline.prototype.setScenes = function setScenes(scenes) {
         this.state.scenes = scenes;
@@ -76,7 +71,7 @@ var Timeline = function (_Component) {
     Timeline.prototype.removeScene = function removeScene(scene) {};
 
     Timeline.prototype.seekTo = function seekTo(time) {
-        this.currentTime = this.startTime + time;
+        this.state.currentTime = this.startTime + time;
     };
 
     /**
@@ -101,6 +96,19 @@ var Timeline = function (_Component) {
                 return a[property].localeCompare(b[property]);
             }
         };
+    };
+
+    Timeline.prototype.hhmmss = function hhmmss(secs) {
+        var minutes = Math.floor(secs / 60);
+        secs = secs % 60;
+        var hours = Math.floor(minutes / 60);
+        minutes = minutes % 60;
+        return this.pad(hours) + ':' + this.pad(minutes) + ':' + this.pad(secs);
+        // return pad(hours)+":"+pad(minutes)+":"+pad(secs); for old browsers
+    };
+
+    Timeline.prototype.pad = function pad(num) {
+        return ("0" + num).slice(-2);
     };
 
     Timeline.prototype.componentDidMount = function componentDidMount() {
@@ -151,9 +159,10 @@ var Timeline = function (_Component) {
         */
 
         //175 = this.state.endTime = 5
-        for (var tt = 0; tt <= this.state.endTime; tt += 5) {
+        for (var tt = 0; tt <= this.state.endTime; tt += Math.ceil(this.state.endTime / 10)) {
             var item = d.createElement('div');
-            item.appendChild(document.createTextNode("| " + tt));
+
+            item.appendChild(document.createTextNode("| " + this.hhmmss(tt)));
             item.style.paddingTop = "4px";
             item.style.paddingLeft = "4px";
             item.style.display = "inline-block";
@@ -196,7 +205,7 @@ var Timeline = function (_Component) {
 
 
                 var item = d.createElement('div');
-                item.appendChild(document.createTextNode(i.start));
+                item.appendChild(document.createTextNode(this.hhmmss(i.start)));
 
                 /*color block*/
                 if (this.state.options.groupcolors && this.state.options.groupcolors[c]) {
@@ -235,7 +244,9 @@ var Timeline = function (_Component) {
         containerTimeline.appendChild(cursorTimeline);
         blockDuration.style.height = blockH * l + "px";
 
-        var cursorOfsset = this.state.currentTime / this.state.endTime * 90 + 10;
+        var timer = this.props.currentTime > this.state.endTime ? this.state.endTime : this.props.currentTime;
+
+        var cursorOfsset = timer / this.state.endTime * 90 + 10;
         cursorTimeline.style.left = cursorOfsset + "%";
 
         var container = document.getElementById("funkymed-timeline");
@@ -288,6 +299,11 @@ var Timeline = function (_Component) {
                 this.scenario.updateEndTime(this.state.endTime);
             }
         }
+
+        if (this.props.isplaying) {
+            this.scenario.check(this.props.currentTime);
+        }
+
         return _react2.default.createElement('div', { id: 'funkymed-timeline' });
     };
 

@@ -15,10 +15,8 @@ var Scenario = function () {
         _classCallCheck(this, Scenario);
 
         this.params = {
-            offset: -1,
-            timer: 0,
+            timer: startTime,
             startTime: startTime,
-            currentTime: startTime,
             endTime: startTime
         };
         this.scenes = [];
@@ -33,9 +31,11 @@ var Scenario = function () {
 
     Scenario.prototype.check = function check(timer) {
         this.params.timer = timer;
-        for (var scene in this.scenes) {
-            if (timer >= scene.start && scene.end && timer < scene.end && scene.enabled) {
+        for (var b in this.scenes) {
+            var scene = this.scenes[b];
+            if (timer >= scene.params.start && timer < scene.params.end && scene.params.enabled && !this.scenes[b].passed) {
                 scene.callback(scene);
+                delete this.scenes[b];
             }
         }
     };
