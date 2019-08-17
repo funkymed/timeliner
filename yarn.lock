@@ -3058,7 +3058,7 @@ moment-timezone@^0.5.26:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0", moment@^2.24.0:
+"moment@>= 2.9.0", moment@^2.18.1, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -4434,6 +4434,14 @@ union-value@^1.0.0:
     get-value "^2.0.6"
     is-extendable "^0.1.1"
     set-value "^2.0.1"
+
+unique-hash@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/unique-hash/-/unique-hash-2.6.0.tgz#84ec122f98a6eb1a9aaea4d615a646a3bd6bc246"
+  integrity sha512-ErP1Rw/20iduZFe/OGYMODcEw9QX5bUB8q+7wWzKc5cnD8VvW3C1fYxCQQ80uDkIwPmBwp+piUTIPsqs1Lbw0w==
+  dependencies:
+    lodash "^4.17.4"
+    moment "^2.18.1"
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"

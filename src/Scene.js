@@ -1,4 +1,5 @@
 import Timeline from "./Timeline";
+import uniqueHash from "unique-hash"
 
 export default class Scene {
     constructor(params) {
@@ -13,8 +14,7 @@ export default class Scene {
             this.callback = this.params.callback;
             delete this.params.callback;
         }
-        this.id = this.generateUid();
-        this.hash = this.params.start+"-"+this.params.type+"-"+this.params.end;
+        this.hash = uniqueHash(this.params.start);
     }
 
     getType() {

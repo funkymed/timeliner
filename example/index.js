@@ -64,6 +64,13 @@ class Example extends Component
         if(!this.fired[data.hash]){
             this.fired[data.hash]=true;
             console.log(data);
+
+            var content = "";
+            content+= `time : ${data.type}<br/>`;
+            content+= `start : ${data.start}<br/>`;
+            content+= `end : ${data.end}<br/>`;
+
+            document.getElementById("actual-scene").innerHTML=JSON.stringify(data);
         }
     }
 
@@ -111,6 +118,7 @@ class Example extends Component
         this.state.isplaying = false;
         this.state.currentTime = 0;
         this.fired=[];
+        document.getElementById("actual-scene").innerHTML="";
         this.setState({ state: this.state });
     }
 
@@ -128,6 +136,11 @@ class Example extends Component
                 <br/>
                 <div>
                     <Timeline isplaying={this.state.isplaying} data={this.state.json} scene_callback={this.callback} currentTime={this.state.currentTime} />
+                </div>
+                <div>
+                    <h3>Actual scene</h3>
+                    <div id="actual-scene">
+                    </div>
                 </div>
             </div>
         );

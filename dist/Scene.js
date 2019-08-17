@@ -6,6 +6,10 @@ var _Timeline = require("./Timeline");
 
 var _Timeline2 = _interopRequireDefault(_Timeline);
 
+var _uniqueHash = require("unique-hash");
+
+var _uniqueHash2 = _interopRequireDefault(_uniqueHash);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25,8 +29,7 @@ var Scene = function () {
             this.callback = this.params.callback;
             delete this.params.callback;
         }
-        this.id = this.generateUid();
-        this.hash = this.params.start + "-" + this.params.type + "-" + this.params.end;
+        this.hash = (0, _uniqueHash2.default)(this.params.start);
     }
 
     Scene.prototype.getType = function getType() {
