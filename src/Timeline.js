@@ -1,8 +1,5 @@
 import React, {Component, PropTypes} from 'react'
 import Scenario from './Scenario'
-import Moment from 'react-moment';
-import 'moment-timezone';
-import * as moment from 'moment';
 import Tools from './Tools'
 
 export default class Timeline extends Component {
@@ -15,9 +12,11 @@ export default class Timeline extends Component {
             startTime: this.props.data.startTime,
             scenes: this.props.data.scenes,
             endTime: this.props.data.startTime,
-            options: this.props.data.options ? this.props.data.options : false
+            options: this.props.data.options ? this.props.data.options : false,
+            rendering: this.props.rendering ? this.props.rendering : false
         };
         this.callback = this.props.scene_callback ? this.props.scene_callback : false;
+        this.editcallback = this.props.editcallback ? this.props.editcallback : false;
     }
 
 
@@ -174,7 +173,21 @@ export default class Timeline extends Component {
                 item.style.width = ((i.end - i.start) / this.state.endTime * blockRight) + "%";
 
                 item.style.textAlign = "left";
+
+                if(this.editcallback){
+                    for(var dataset in i){
+                        item.dataset[dataset] = i[dataset];
+                    }
+                    item.dataset.hash = Tools.getHash([i.start,i.type,i.end].join("-"));
+                    item.dataset.timecode = Tools.hhmmss(i.start);
+
+                    item.addEventListener('click',this.editcallback);
+                    item.addEventListener('mouseover',this.editcallback);
+                    item.addEventListener('mouseout',this.editcallback);
+                }
+
                 itemDuration.appendChild(item);
+
                 cc++;
             }
             l++;
@@ -194,15 +207,18 @@ export default class Timeline extends Component {
         var cursorOfsset = ((timer/this.state.endTime)*90)+10;
         cursorTimeline.style.left = cursorOfsset+"%";
 
-        const container = document.getElementById("funkymed-timeline");
-        container.appendChild(containerTimeline);
-
+        if(this.props.rendering){
+            const container = document.getElementById("funkymed-timeline");
+            container.appendChild(containerTimeline);
+        }
     }
 
     componentDidUpdate() {
         const container = document.getElementById("funkymed-timeline");
         container.innerHTML="";
-        this.componentDidMount();
+        if(this.props.rendering){
+            this.componentDidMount();
+        }
     }
 
     render() {

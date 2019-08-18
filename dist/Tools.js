@@ -10,6 +10,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * Tools with static transverse functions
+ */
 var Tools = function () {
     function Tools() {
         _classCallCheck(this, Tools);
@@ -26,6 +29,10 @@ var Tools = function () {
 
     Tools.pad = function pad(num) {
         return ("0" + num).slice(-2);
+    };
+
+    Tools.getHash = function getHash(data) {
+        return (0, _uniqueHash2.default)(data);
     };
 
     Tools.generateUid = function generateUid(separator) {

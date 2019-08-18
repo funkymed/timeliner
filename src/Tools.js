@@ -1,5 +1,8 @@
 import uniqueHash from "unique-hash"
 
+/**
+ * Tools with static transverse functions
+ */
 export default class Tools {
     static hhmmss(secs) {
         var minutes = Math.floor(secs / 60);
@@ -12,6 +15,10 @@ export default class Tools {
 
     static pad(num) {
         return ("0"+num).slice(-2);
+    }
+
+    static getHash(data){
+        return uniqueHash(data);
     }
 
     static generateUid(separator) {

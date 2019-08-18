@@ -1,4 +1,3 @@
-import uniqueHash from "unique-hash"
 import Tools from './Tools'
 
 export default class Scene {
@@ -14,7 +13,7 @@ export default class Scene {
             this.callback = this.params.callback;
             delete this.params.callback;
         }
-        this.hash = uniqueHash(this.params.start);
+        this.hash = Tools.getHash([this.params.start,this.params.type,this.params.end].join("-"));
     }
 
     getType() {

@@ -10,21 +10,9 @@ var _Scenario = require('./Scenario');
 
 var _Scenario2 = _interopRequireDefault(_Scenario);
 
-var _reactMoment = require('react-moment');
-
-var _reactMoment2 = _interopRequireDefault(_reactMoment);
-
-require('moment-timezone');
-
-var _moment = require('moment');
-
-var moment = _interopRequireWildcard(_moment);
-
 var _Tools = require('./Tools');
 
 var _Tools2 = _interopRequireDefault(_Tools);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48,9 +36,11 @@ var Timeline = function (_Component) {
             startTime: _this.props.data.startTime,
             scenes: _this.props.data.scenes,
             endTime: _this.props.data.startTime,
-            options: _this.props.data.options ? _this.props.data.options : false
+            options: _this.props.data.options ? _this.props.data.options : false,
+            rendering: _this.props.rendering ? _this.props.rendering : false
         };
         _this.callback = _this.props.scene_callback ? _this.props.scene_callback : false;
+        _this.editcallback = _this.props.editcallback ? _this.props.editcallback : false;
         return _this;
     }
 
@@ -219,7 +209,21 @@ var Timeline = function (_Component) {
                 item.style.width = (i.end - i.start) / this.state.endTime * blockRight + "%";
 
                 item.style.textAlign = "left";
+
+                if (this.editcallback) {
+                    for (var dataset in i) {
+                        item.dataset[dataset] = i[dataset];
+                    }
+                    item.dataset.hash = _Tools2.default.getHash([i.start, i.type, i.end].join("-"));
+                    item.dataset.timecode = _Tools2.default.hhmmss(i.start);
+
+                    item.addEventListener('click', this.editcallback);
+                    item.addEventListener('mouseover', this.editcallback);
+                    item.addEventListener('mouseout', this.editcallback);
+                }
+
                 itemDuration.appendChild(item);
+
                 cc++;
             }
             l++;
@@ -239,14 +243,18 @@ var Timeline = function (_Component) {
         var cursorOfsset = timer / this.state.endTime * 90 + 10;
         cursorTimeline.style.left = cursorOfsset + "%";
 
-        var container = document.getElementById("funkymed-timeline");
-        container.appendChild(containerTimeline);
+        if (this.props.rendering) {
+            var container = document.getElementById("funkymed-timeline");
+            container.appendChild(containerTimeline);
+        }
     };
 
     Timeline.prototype.componentDidUpdate = function componentDidUpdate() {
         var container = document.getElementById("funkymed-timeline");
         container.innerHTML = "";
-        this.componentDidMount();
+        if (this.props.rendering) {
+            this.componentDidMount();
+        }
     };
 
     Timeline.prototype.render = function render() {

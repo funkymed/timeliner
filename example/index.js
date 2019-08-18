@@ -36,7 +36,8 @@ class Example extends Component
         this.state = {
             currentTime: 0,
             isplaying: false,
-            json: json
+            json: json,
+            rendering : true
         };
 
         this.state.currentTime = 0;
@@ -47,6 +48,8 @@ class Example extends Component
         this.pause = this.pause.bind(this);
         this.stop = this.stop.bind(this);
         this.callback = this.callback.bind(this);
+        this.editcallback = this.editcallback.bind(this);
+        this.togglerendering = this.togglerendering.bind(this);
     }
 
     getSortOrder(prop) {
@@ -60,18 +63,27 @@ class Example extends Component
         }
     }
 
+    editcallback(e){
+        //console.log(e.type, e.target, e.target.dataset);
+        var content = "";
+        content+= `type : ${e.type}<br/>`;
+        content+= `data : ${JSON.stringify(e.target.dataset)}`;
+
+        document.getElementById("event-scene").innerHTML=content;
+    }
+
     callback(data){
         if(!this.fired[data.hash]){
             this.fired[data.hash]=true;
             console.log(data);
 
-            var content = "";
-            content+= `time : ${data.type}<br/>`;
-            content+= `start : ${data.start}<br/>`;
-            content+= `end : ${data.end}<br/>`;
-
             document.getElementById("actual-scene").innerHTML=JSON.stringify(data);
         }
+    }
+
+    togglerendering(){
+        this.state.rendering = !this.state.rendering;
+        this.setState({ state: this.state });
     }
 
     removeEvent(){
@@ -132,15 +144,17 @@ class Example extends Component
                     <button onClick={this.play}>Play</button>
                     <button onClick={this.pause}>Pause</button>
                     <button onClick={this.stop}>Stop</button>
+                    <button onClick={this.togglerendering}>Toggle rendering</button>
                 </div>
                 <br/>
                 <div>
-                    <Timeline isplaying={this.state.isplaying} data={this.state.json} scene_callback={this.callback} currentTime={this.state.currentTime} />
+                    <Timeline rendering={this.state.rendering} editcallback={this.editcallback} isplaying={this.state.isplaying} data={this.state.json} scene_callback={this.callback} currentTime={this.state.currentTime} />
                 </div>
                 <div>
                     <h3>Actual scene</h3>
-                    <div id="actual-scene">
-                    </div>
+                    <div id="actual-scene"></div>
+                    <h3>Event on scene</h3>
+                    <div id="event-scene"></div>
                 </div>
             </div>
         );

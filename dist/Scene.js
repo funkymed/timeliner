@@ -2,10 +2,6 @@
 
 exports.__esModule = true;
 
-var _uniqueHash = require("unique-hash");
-
-var _uniqueHash2 = _interopRequireDefault(_uniqueHash);
-
 var _Tools = require("./Tools");
 
 var _Tools2 = _interopRequireDefault(_Tools);
@@ -29,7 +25,7 @@ var Scene = function () {
             this.callback = this.params.callback;
             delete this.params.callback;
         }
-        this.hash = (0, _uniqueHash2.default)(this.params.start);
+        this.hash = _Tools2.default.getHash([this.params.start, this.params.type, this.params.end].join("-"));
     }
 
     Scene.prototype.getType = function getType() {
