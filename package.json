@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node_modules/.bin/babel src --out-dir dist",
     "watch": "node_modules/.bin/webpack src --watch",
+    "build-demo": "node_modules/.bin/webpack src",
     "start": "node_modules/.bin/webpack-dev-server --port 3000",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
