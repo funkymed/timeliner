@@ -41,4 +41,10 @@ yarn start
 ```
 
 
+## Demo
 
+The component in action : http://medcg.free.fr/tmp/npm-timeliner
+
+An example of use http://medcg.free.fr/tmp/timeline/?debug=true
+
+![mndrn](./doc/images/capture2.png)
