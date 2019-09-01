@@ -32,6 +32,7 @@ export default class Scenario {
     }
 
     updateEndTime(time) {
+        console.log(time)
         this.params.endTime=time;
     }
 

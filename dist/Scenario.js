@@ -45,6 +45,7 @@ var Scenario = function () {
     };
 
     Scenario.prototype.updateEndTime = function updateEndTime(time) {
+        console.log(time);
         this.params.endTime = time;
     };
 

@@ -1,6 +1,6 @@
 {
   "name": "funkymed-timeliner",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Manage and control a timeliner with many layers",
   "main": "index.js",
   "scripts": {

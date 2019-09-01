@@ -107,7 +107,7 @@ export default class Timeline extends Component {
         itemDuration.style.color = "white";
         blockDuration.appendChild(itemDuration);
 
-        for (var tt = 0; tt <= this.state.endTime; tt += Math.ceil(this.state.endTime/13)) {
+        for (var tt = 0; tt <= this.state.endTime; tt += Math.ceil(this.state.endTime/10)) {
             var item = d.createElement('div');
 
             item.appendChild(document.createTextNode(Tools.hhmmss(tt)));
@@ -117,7 +117,7 @@ export default class Timeline extends Component {
             item.style.display = "inline-block";
             item.style.position = "absolute";
             item.style.height = blockH - 6 + "px";
-            item.style.left = blockLeft + (tt / this.state.endTime * 100) + "%";
+            item.style.left = blockLeft + (tt / this.state.endTime * blockRight) + "%";
             item.style.top = l * blockH - 2 + "px";
             item.style.textAlign = "let";
             itemDuration.appendChild(item);
@@ -158,9 +158,9 @@ export default class Timeline extends Component {
                 item.style.overflow = "hidden";
                 item.style.textAlign = "left";
                 item.style.top = l * blockH + "px";
-                item.style.width = ((i.end - i.start) / this.state.endTime * 100) + "%";
+                item.style.width = ((i.end - i.start) / this.state.endTime * blockRight) + "%";
 
-                item.style.left = (i.start / this.state.endTime * 100) + blockLeft + "%";
+                item.style.left = (i.start / this.state.endTime * blockRight) + blockLeft + "%";
 
                 /*if(i.end){
                     item.style.background = color;
@@ -214,10 +214,10 @@ export default class Timeline extends Component {
 
         var timer = this.props.currentTime>=this.state.endTime ? this.state.endTime : this.props.currentTime;
 
-        var cursorOfsset = ((timer/this.state.endTime)*100)+blockLeft;
-        if(cursorOfsset>100){
-            cursorOfsset=100;
-        }
+        var cursorOfsset = ((timer/this.state.endTime)*blockRight)+blockLeft;
+        /*if(cursorOfsset>blockRight){
+            cursorOfsset=blockRight;
+        }*/
         cursorTimeline.style.left = cursorOfsset+"%";
 
         if(this.props.rendering){
@@ -257,20 +257,13 @@ export default class Timeline extends Component {
             }
 
             this.timelineItems[scene.getType()].push(data);
-
-            if (data.end) {
-                if (data.end > this.state.endTime) {
-                    this.state.endTime = data.end;
-                    this.scenario.updateEndTime(this.state.endTime);
-                }
-            }else {
-                if (data.start > this.state.endTime) {
-                    this.state.endTime = data.start;
-                    this.scenario.updateEndTime(this.state.endTime);
-                }
+            console.log(data.start,data.start >= this.state.endTime);
+            if (data.start >= this.state.endTime) {
+                this.state.endTime = data.start;
             }
         }
-        this.state.endTime+=this.state.endTime*20/100;
+        this.state.endTime+=this.state.endTime*10/100;
+        this.scenario.updateEndTime(this.state.endTime);
 
         if(this.props.isplaying){
             this.scenario.check(this.props.currentTime);
