@@ -18,17 +18,11 @@ var Tools = function () {
         _classCallCheck(this, Tools);
     }
 
-    Tools.hhmmss = function hhmmss(secs) {
-        var minutes = Math.floor(secs / 60);
-        secs = secs % 60;
-        var hours = Math.floor(minutes / 60);
-        minutes = minutes % 60;
-        return Tools.pad(hours) + ":" + Tools.pad(minutes) + ":" + Tools.pad(secs);
-        // return pad(hours)+":"+pad(minutes)+":"+pad(secs); for old browsers
-    };
-
-    Tools.pad = function pad(num) {
-        return ("0" + num).slice(-2);
+    Tools.hhmmss = function hhmmss(sec) {
+        var o = new Date(0);
+        o.setSeconds(sec);
+        var p = new Date(sec * 1000);
+        return o.toISOString().substr(11, 8) + "." + p.getMilliseconds();
     };
 
     Tools.getHash = function getHash(data) {

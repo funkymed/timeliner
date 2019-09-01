@@ -6,6 +6,7 @@ let node = document.getElementById('app');
 
 class Example extends Component
 {
+
     constructor()
     {
         super();
@@ -21,26 +22,25 @@ class Example extends Component
                 }
             },
             scenes: [
-                {start: 0, end: 60, type: "slider", data: {a: 1, b: 2}},
-                {start: 60, end: 120, type: "title", data: {a: 1, b: 2}},
-                {start: 120, end: 180, type: "slider", data: {}},
-                {start: 180, end: 220, type: "chat", data: {}},
-                {start: 220, end: 280, type: "slider", data: {}},
-                {start: 280, end: 320, type: "title", data: {}},
-                {start: 320, end: 380, type: "survey", data: {}},
-                {start: 380, end: 420, type: "chat", data: {}},
-                {start: 420, end: 480, type: "survey", data: {}},
+                {start: 2, type: "chat", data: {}},
+                {start: 5, type: "survey", data: {}},
+                {start: 10, type: "slider", data: {}},
+                {start: 15, type: "slider", data: {}},
+                {start: 20, type: "chat", data: {}},
+                {start: 30, type: "title", data: {}},
+                {start: 33, type: "chat", data: {}},
+                {start: 35, type: "slider", data: {}},
             ]
         };
         this.fired = [];
         this.state = {
             currentTime: 0,
+            dateStart: false,
             isplaying: false,
             json: json,
             rendering : true
         };
 
-        this.state.currentTime = 0;
         this.addEvent = this.addEvent.bind(this);
         this.removeEvent = this.removeEvent.bind(this);
         this.updateCurrentTime = this.updateCurrentTime.bind(this);
@@ -64,19 +64,15 @@ class Example extends Component
     }
 
     editcallback(e){
-        //console.log(e.type, e.target, e.target.dataset);
         var content = "";
         content+= `type : ${e.type}<br/>`;
         content+= `data : ${JSON.stringify(e.target.dataset)}`;
-
         document.getElementById("event-scene").innerHTML=content;
     }
 
     callback(data){
         if(!this.fired[data.hash]){
-            this.fired[data.hash]=true;
-            console.log(data);
-
+            var callBackTime = (new Date().getTime()-this.dateStart)/1000;
             document.getElementById("actual-scene").innerHTML=JSON.stringify(data);
         }
     }
@@ -88,7 +84,6 @@ class Example extends Component
 
     removeEvent(){
         this.state.json.scenes.sort(this.getSortOrder("start"));
-
         this.state.json.scenes.reverse().shift();
         this.setState({ state: this.state });
     }
@@ -99,26 +94,32 @@ class Example extends Component
         var types = ["survey","title","chat","slider"];
         var randType = types[Math.floor(Math.random()*types.length)];
         const last = this.state.json.scenes.reverse()[0];
-        var scene = {start: last.end, end: last.end+120, type: randType, data: {"random":true}};
+
+        var scene = {start: last.start+5, end:last.start+10, type: randType, data: {"random":true}};
         this.state.json.scenes.push(scene);
         this.setState({ state: this.state });
     }
 
     componentDidMount() {
-        requestAnimationFrame(this.updateCurrentTime);
+        this.updateCurrentTime();
     }
 
     updateCurrentTime(){
-        if(this.state.isplaying){
-            this.state.currentTime += 1;
-            this.setState({ state: this.state });
+        if(this.state.isplaying && this.state.isplaying && this.dateStart){
+            var dateNow = new Date().getTime();
+            var currentTime = (dateNow - this.dateStart)/1000;
+            this.setState({ currentTime });
         }
         requestAnimationFrame(this.updateCurrentTime);
     }
 
-    play(){
+    play() {
+        this.dateStart = new Date().getTime();
+        if (this.state.currentTime) {
+            this.dateStart = this.dateStart - this.state.currentTime * 1000;
+        }
         this.state.isplaying = true;
-        this.setState({ state: this.state });
+        this.setState({state: this.state});
     }
 
     pause(){
@@ -128,6 +129,7 @@ class Example extends Component
 
     stop(){
         this.state.isplaying = false;
+        this.dateStart = false;
         this.state.currentTime = 0;
         this.fired=[];
         document.getElementById("actual-scene").innerHTML="";
@@ -151,9 +153,9 @@ class Example extends Component
                     <Timeline rendering={this.state.rendering} editcallback={this.editcallback} isplaying={this.state.isplaying} data={this.state.json} scene_callback={this.callback} currentTime={this.state.currentTime} />
                 </div>
                 <div>
-                    <h3>Actual scene</h3>
+                    <h3>Callback</h3>
                     <div id="actual-scene"></div>
-                    <h3>Event on scene</h3>
+                    <h3>Selected</h3>
                     <div id="event-scene"></div>
                 </div>
             </div>

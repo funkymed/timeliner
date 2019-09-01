@@ -28,23 +28,13 @@ or
 npm install funkymed-timiliner 
 ```
 
-## Build
-
-```bash
-yarn build
-```
-
-## Test
-
-```bash
-yarn start
-```
-
-
 ## Demo
 
 The component in action : http://medcg.free.fr/tmp/npm-timeliner
 
-An example of use http://medcg.free.fr/tmp/timeline/?debug=true
+### build the demo locally
 
-![mndrn](./doc/images/capture2.png)
+```bash
+yarn build
+yarn start
+```

@@ -4,17 +4,11 @@ import uniqueHash from "unique-hash"
  * Tools with static transverse functions
  */
 export default class Tools {
-    static hhmmss(secs) {
-        var minutes = Math.floor(secs / 60);
-        secs = secs%60;
-        var hours = Math.floor(minutes/60)
-        minutes = minutes%60;
-        return `${Tools.pad(hours)}:${Tools.pad(minutes)}:${Tools.pad(secs)}`;
-        // return pad(hours)+":"+pad(minutes)+":"+pad(secs); for old browsers
-    }
-
-    static pad(num) {
-        return ("0"+num).slice(-2);
+    static hhmmss(sec){
+        let o = new Date(0)
+        o.setSeconds(sec);
+        let p =  new Date(sec*1000)
+        return o.toISOString().substr(11, 8)+ "." + p.getMilliseconds();
     }
 
     static getHash(data){
