@@ -257,7 +257,6 @@ export default class Timeline extends Component {
             }
 
             this.timelineItems[scene.getType()].push(data);
-            console.log(data.start,data.start >= this.state.endTime);
             if (data.start >= this.state.endTime) {
                 this.state.endTime = data.start;
             }

@@ -32431,7 +32431,6 @@ var Timeline = function (_Component) {
                     }
 
                     this.timelineItems[scene.getType()].push(data);
-                    console.log(data.start, data.start >= this.state.endTime);
                     if (data.start >= this.state.endTime) {
                         this.state.endTime = data.start;
                     }
@@ -32616,7 +32615,6 @@ var Scenario = function () {
     }, {
         key: 'updateEndTime',
         value: function updateEndTime(time) {
-            console.log(time);
             this.params.endTime = time;
         }
     }, {
