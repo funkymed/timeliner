@@ -15,7 +15,6 @@ export default class Timeline extends Component {
             options: this.props.data.options ? this.props.data.options : false,
             rendering: this.props.rendering ? this.props.rendering : false
         };
-        console.log(this.props.data.scenes)
         this.callback = this.props.scene_callback ? this.props.scene_callback : false;
         this.editcallback = this.props.editcallback ? this.props.editcallback : false;
     }
@@ -185,7 +184,9 @@ export default class Timeline extends Component {
                 if(this.editcallback){
                     var itemEvent = circle ? circle : item;
                     for(var dataset in i){
-                        itemEvent.dataset[dataset] = i[dataset];
+                        if(dataset.indexOf('@')==-1){
+                            itemEvent.dataset[dataset] = dataset == "data" ? JSON.stringify(i[dataset]) : i[dataset];
+                        }
                     }
                     itemEvent.dataset.hash = Tools.getHash([i.start,i.type,i.end].join("-"));
                     itemEvent.dataset.timecode = Tools.hhmmss(i.start);

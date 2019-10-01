@@ -66,7 +66,7 @@ class Example extends Component
     editcallback(e){
         var content = "";
         content+= `type : ${e.type}<br/>`;
-        content+= `data : ${JSON.stringify(e.target.dataset)}`;
+        content+= `data : ${JSON.stringify(Object.assign({}, e.target.dataset))}`;
         document.getElementById("event-scene").innerHTML=content;
     }
 

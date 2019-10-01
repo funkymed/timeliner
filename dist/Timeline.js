@@ -39,7 +39,6 @@ var Timeline = function (_Component) {
             options: _this.props.data.options ? _this.props.data.options : false,
             rendering: _this.props.rendering ? _this.props.rendering : false
         };
-        console.log(_this.props.data.scenes);
         _this.callback = _this.props.scene_callback ? _this.props.scene_callback : false;
         _this.editcallback = _this.props.editcallback ? _this.props.editcallback : false;
         return _this;
@@ -222,7 +221,9 @@ var Timeline = function (_Component) {
                 if (this.editcallback) {
                     var itemEvent = circle ? circle : item;
                     for (var dataset in i) {
-                        itemEvent.dataset[dataset] = i[dataset];
+                        if (dataset.indexOf('@') == -1) {
+                            itemEvent.dataset[dataset] = dataset == "data" ? JSON.stringify(i[dataset]) : i[dataset];
+                        }
                     }
                     itemEvent.dataset.hash = _Tools2.default.getHash([i.start, i.type, i.end].join("-"));
                     itemEvent.dataset.timecode = _Tools2.default.hhmmss(i.start);
