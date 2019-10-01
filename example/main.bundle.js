@@ -32152,6 +32152,7 @@ var Timeline = function (_Component) {
             options: _this.props.data.options ? _this.props.data.options : false,
             rendering: _this.props.rendering ? _this.props.rendering : false
         };
+        console.log(_this.props.data.scenes);
         _this.callback = _this.props.scene_callback ? _this.props.scene_callback : false;
         _this.editcallback = _this.props.editcallback ? _this.props.editcallback : false;
         return _this;
@@ -32425,7 +32426,6 @@ var Timeline = function (_Component) {
                         data.callback = this.callback;
                     }
                     var scene = this.scenario.add(data);
-
                     if (!this.timelineItems[scene.getType()]) {
                         this.timelineItems[scene.getType()] = [];
                     }
@@ -32670,10 +32670,10 @@ var Scene = function () {
         this.params = params;
         this.params.enabled = this.params.enabled ? this.params.enabled : true;
         this.params.timecode = _Tools2.default.hhmmss(this.params.start);
-        this.data = this.params.data ? this.params.data : {};
-        if (this.params.data) {
-            delete this.params.data;
+        if (!this.params.data) {
+            this.params.data = {};
         }
+
         if (this.params.callback) {
             this.callback = this.params.callback;
             delete this.params.callback;

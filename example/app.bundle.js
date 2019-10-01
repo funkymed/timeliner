@@ -39581,10 +39581,10 @@ var Scene = function () {
         this.params = params;
         this.params.enabled = this.params.enabled ? this.params.enabled : true;
         this.params.timecode = _Tools2.default.hhmmss(this.params.start);
-        this.data = this.params.data ? this.params.data : {};
-        if (this.params.data) {
-            delete this.params.data;
+        if (!this.params.data) {
+            this.params.data = {};
         }
+
         if (this.params.callback) {
             this.callback = this.params.callback;
             delete this.params.callback;
@@ -39677,6 +39677,7 @@ var Timeline = function (_Component) {
             options: _this.props.data.options ? _this.props.data.options : false,
             rendering: _this.props.rendering ? _this.props.rendering : false
         };
+        console.log(_this.props.data.scenes);
         _this.callback = _this.props.scene_callback ? _this.props.scene_callback : false;
         _this.editcallback = _this.props.editcallback ? _this.props.editcallback : false;
         return _this;
@@ -39934,7 +39935,6 @@ var Timeline = function (_Component) {
                 data.callback = this.callback;
             }
             var scene = this.scenario.add(data);
-
             if (!this.timelineItems[scene.getType()]) {
                 this.timelineItems[scene.getType()] = [];
             }
@@ -40004,7 +40004,7 @@ var Example = function (_Component) {
                     "survey": ["#30c84a", "#3dfb5d"]
                 }
             },
-            scenes: [{ start: 2, type: "chat", data: {} }, { start: 5, type: "survey", data: {} }, { start: 10, type: "slider", data: {} }, { start: 15, type: "slider", data: {} }, { start: 20, type: "chat", data: {} }, { start: 30, type: "title", data: {} }, { start: 33, type: "chat", data: {} }, { start: 35, type: "slider", data: {} }]
+            scenes: [{ start: 2, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 5, type: "survey", data: { 'a': '1', 'b': 5 } }, { start: 10, type: "slider", data: { 'a': '1', 'b': 5 } }, { start: 15, type: "slider", data: { 'a': '1', 'b': 5 } }, { start: 20, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 30, type: "title", data: { 'a': '1', 'b': 5 } }, { start: 33, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 35, type: "slider", data: { 'a': '1', 'b': 5 } }]
         };
         _this.fired = [];
         _this.state = {
@@ -40166,7 +40166,13 @@ var Example = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement(_index.Timeline, { rendering: this.state.rendering, editcallback: this.editcallback, isplaying: this.state.isplaying, data: this.state.json, scene_callback: this.callback, currentTime: this.state.currentTime })
+                    _react2.default.createElement(_index.Timeline, { rendering: this.state.rendering,
+                        editcallback: this.editcallback,
+                        isplaying: this.state.isplaying,
+                        data: this.state.json,
+                        scene_callback: this.callback,
+                        currentTime: this.state.currentTime
+                    })
                 ),
                 _react2.default.createElement(
                     'div',
