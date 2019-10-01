@@ -15,6 +15,7 @@ export default class Timeline extends Component {
             options: this.props.data.options ? this.props.data.options : false,
             rendering: this.props.rendering ? this.props.rendering : false
         };
+        console.log(this.props.data.scenes)
         this.callback = this.props.scene_callback ? this.props.scene_callback : false;
         this.editcallback = this.props.editcallback ? this.props.editcallback : false;
     }
@@ -251,7 +252,6 @@ export default class Timeline extends Component {
                 data.callback = this.callback;
             }
             const scene = this.scenario.add(data);
-
             if(!this.timelineItems[scene.getType()]){
                 this.timelineItems[scene.getType()]=[];
             }

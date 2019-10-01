@@ -5,10 +5,10 @@ export default class Scene {
         this.params = params;
         this.params.enabled = this.params.enabled ? this.params.enabled : true;
         this.params.timecode = Tools.hhmmss(this.params.start);
-        this.data = this.params.data ? this.params.data : {};
-        if (this.params.data) {
-            delete this.params.data;
+        if(!this.params.data){
+            this.params.data = {};
         }
+
         if (this.params.callback) {
             this.callback = this.params.callback;
             delete this.params.callback;

@@ -22,14 +22,14 @@ class Example extends Component
                 }
             },
             scenes: [
-                {start: 2, type: "chat", data: {}},
-                {start: 5, type: "survey", data: {}},
-                {start: 10, type: "slider", data: {}},
-                {start: 15, type: "slider", data: {}},
-                {start: 20, type: "chat", data: {}},
-                {start: 30, type: "title", data: {}},
-                {start: 33, type: "chat", data: {}},
-                {start: 35, type: "slider", data: {}},
+                {start: 2, type: "chat", data: {'a':'1','b':5}},
+                {start: 5, type: "survey", data: {'a':'1','b':5}},
+                {start: 10, type: "slider", data: {'a':'1','b':5}},
+                {start: 15, type: "slider", data: {'a':'1','b':5}},
+                {start: 20, type: "chat", data: {'a':'1','b':5}},
+                {start: 30, type: "title", data: {'a':'1','b':5}},
+                {start: 33, type: "chat", data: {'a':'1','b':5}},
+                {start: 35, type: "slider", data: {'a':'1','b':5}},
             ]
         };
         this.fired = [];
@@ -150,7 +150,13 @@ class Example extends Component
                 </div>
                 <br/>
                 <div>
-                    <Timeline rendering={this.state.rendering} editcallback={this.editcallback} isplaying={this.state.isplaying} data={this.state.json} scene_callback={this.callback} currentTime={this.state.currentTime} />
+                    <Timeline rendering={this.state.rendering}
+                              editcallback={this.editcallback}
+                              isplaying={this.state.isplaying}
+                              data={this.state.json}
+                              scene_callback={this.callback}
+                              currentTime={this.state.currentTime}
+                    />
                 </div>
                 <div>
                     <h3>Callback</h3>
