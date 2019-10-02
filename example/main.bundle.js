@@ -32147,12 +32147,11 @@ var Timeline = function (_Component) {
             currentTime: _this.props.currentTime ? _this.props.currentTime : 0,
             isplaying: _this.props.isplaying ? _this.props.isplaying : false,
             startTime: _this.props.data.startTime,
-            scenes: _this.props.data.scenes,
-            endTime: _this.props.data.startTime,
+            scenes: _this.props.data.scenes ? _this.props.data.scenes : [],
+            endTime: _this.props.data.startTime ? _this.props.data.startTime : 0,
             options: _this.props.data.options ? _this.props.data.options : false,
             rendering: _this.props.rendering ? _this.props.rendering : false
         };
-        console.log(_this.props.data.scenes);
         _this.callback = _this.props.scene_callback ? _this.props.scene_callback : false;
         _this.editcallback = _this.props.editcallback ? _this.props.editcallback : false;
         return _this;
@@ -32211,6 +32210,11 @@ var Timeline = function (_Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
+
+            if (this.props.data.scenes.length <= 0) {
+                return;
+            }
+
             var d = document;
             var containerTimeline = d.createElement('div');
             containerTimeline.style.width = "100%";
@@ -32337,7 +32341,9 @@ var Timeline = function (_Component) {
                         if (this.editcallback) {
                             var itemEvent = circle ? circle : item;
                             for (var dataset in i) {
-                                itemEvent.dataset[dataset] = i[dataset];
+                                if (dataset.indexOf('@') == -1) {
+                                    itemEvent.dataset[dataset] = dataset == "data" ? JSON.stringify(i[dataset]) : i[dataset];
+                                }
                             }
                             itemEvent.dataset.hash = _Tools2.default.getHash([i.start, i.type, i.end].join("-"));
                             itemEvent.dataset.timecode = _Tools2.default.hhmmss(i.start);
@@ -32405,58 +32411,57 @@ var Timeline = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var startTime = this.props.startTime;
-
 
             this.scenario = new _Scenario2.default(this.state.startTime);
             this.timelineItems = [];
             this.state.endTime = this.state.startTime;
             var scenes = this.props.data.scenes;
-            scenes.sort(this.dynamicSort("type"));
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
+            if (scenes.length > 0) {
+                scenes.sort(this.dynamicSort("type"));
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
 
-            try {
-                for (var _iterator2 = scenes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var data = _step2.value;
-
-                    //data.end = data.end ? data.end : data.start+5;
-                    if (this.callback) {
-                        data.callback = this.callback;
-                    }
-                    var scene = this.scenario.add(data);
-                    if (!this.timelineItems[scene.getType()]) {
-                        this.timelineItems[scene.getType()] = [];
-                    }
-
-                    this.timelineItems[scene.getType()].push(data);
-                    if (data.start >= this.state.endTime) {
-                        this.state.endTime = data.start;
-                    }
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
                 try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
+                    for (var _iterator2 = scenes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        var data = _step2.value;
+
+                        //data.end = data.end ? data.end : data.start+5;
+                        if (this.callback) {
+                            data.callback = this.callback;
+                        }
+                        var scene = this.scenario.add(data);
+                        if (!this.timelineItems[scene.getType()]) {
+                            this.timelineItems[scene.getType()] = [];
+                        }
+
+                        this.timelineItems[scene.getType()].push(data);
+                        if (data.start >= this.state.endTime) {
+                            this.state.endTime = data.start;
+                        }
                     }
+                } catch (err) {
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
                 } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
+                    try {
+                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                            _iterator2.return();
+                        }
+                    } finally {
+                        if (_didIteratorError2) {
+                            throw _iteratorError2;
+                        }
                     }
                 }
+
+                this.state.endTime += this.state.endTime * 10 / 100;
+                this.scenario.updateEndTime(this.state.endTime);
+
+                if (this.props.isplaying) {
+                    this.scenario.check(this.props.currentTime);
+                }
             }
-
-            this.state.endTime += this.state.endTime * 10 / 100;
-            this.scenario.updateEndTime(this.state.endTime);
-
-            if (this.props.isplaying) {
-                this.scenario.check(this.props.currentTime);
-            }
-
             return _react2.default.createElement('div', { id: 'funkymed-timeline' });
         }
     }]);

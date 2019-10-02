@@ -10,8 +10,8 @@ export default class Timeline extends Component {
             currentTime: this.props.currentTime ? this.props.currentTime : 0,
             isplaying: this.props.isplaying ? this.props.isplaying : false,
             startTime: this.props.data.startTime,
-            scenes: this.props.data.scenes,
-            endTime: this.props.data.startTime,
+            scenes: this.props.data.scenes ? this.props.data.scenes : [],
+            endTime: this.props.data.startTime ? this.props.data.startTime : 0,
             options: this.props.data.options ? this.props.data.options : false,
             rendering: this.props.rendering ? this.props.rendering : false
         };
@@ -65,6 +65,11 @@ export default class Timeline extends Component {
     }
 
     componentDidMount() {
+
+        if(this.props.data.scenes.length<=0){
+            return;
+        }
+
         var d = document;
         var containerTimeline = d.createElement('div');
         containerTimeline.style.width = "100%";
@@ -166,16 +171,16 @@ export default class Timeline extends Component {
                     item.style.background = color;
                     item.style.height = blockH - 4 + "px";
                 }else{*/
-                    item.style.marginTop = "4px";
+                item.style.marginTop = "4px";
 
-                    var circle = d.createElement('div');
-                    circle.style.borderRadius = "50%";
-                    circle.style.width = blockH / 2 + "px";
-                    circle.style.height = blockH / 2 + "px";
-                    circle.style.background = color;
-                    circle.style.float = "left";
-                    circle.style.marginRight = "5px";
-                    item.appendChild(circle);
+                var circle = d.createElement('div');
+                circle.style.borderRadius = "50%";
+                circle.style.width = blockH / 2 + "px";
+                circle.style.height = blockH / 2 + "px";
+                circle.style.background = color;
+                circle.style.float = "left";
+                circle.style.marginRight = "5px";
+                item.appendChild(circle);
                 //}
                 if(this.endTime<45){
                     item.appendChild(document.createTextNode(Tools.hhmmss(i.start)));
@@ -238,39 +243,37 @@ export default class Timeline extends Component {
 
     render() {
 
-        const {
-            startTime
-        } = this.props;
-
         this.scenario = new Scenario(this.state.startTime);
         this.timelineItems=[];
         this.state.endTime=this.state.startTime;
         var scenes = this.props.data.scenes;
-        scenes.sort(this.dynamicSort("type"));
-        for (const data of scenes) {
-            //data.end = data.end ? data.end : data.start+5;
-            if (this.callback) {
-                data.callback = this.callback;
-            }
-            const scene = this.scenario.add(data);
-            if(!this.timelineItems[scene.getType()]){
-                this.timelineItems[scene.getType()]=[];
+        if(scenes.length>0){
+            scenes.sort(this.dynamicSort("type"));
+            for (const data of scenes) {
+                //data.end = data.end ? data.end : data.start+5;
+                if (this.callback) {
+                    data.callback = this.callback;
+                }
+                const scene = this.scenario.add(data);
+                if(!this.timelineItems[scene.getType()]){
+                    this.timelineItems[scene.getType()]=[];
+                }
+
+                this.timelineItems[scene.getType()].push(data);
+                if (data.start >= this.state.endTime) {
+                    this.state.endTime = data.start;
+                }
             }
 
-            this.timelineItems[scene.getType()].push(data);
-            if (data.start >= this.state.endTime) {
-                this.state.endTime = data.start;
+            this.state.endTime+=this.state.endTime*10/100;
+            this.scenario.updateEndTime(this.state.endTime);
+
+            if(this.props.isplaying){
+                this.scenario.check(this.props.currentTime);
             }
         }
-        this.state.endTime+=this.state.endTime*10/100;
-        this.scenario.updateEndTime(this.state.endTime);
-
-        if(this.props.isplaying){
-            this.scenario.check(this.props.currentTime);
-        }
-
         return (
-            <div id="funkymed-timeline"></div>
+          <div id="funkymed-timeline"></div>
         )
     }
 }

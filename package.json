@@ -1,6 +1,6 @@
 {
   "name": "funkymed-timeliner",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Manage and control a timeliner with many layers",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "build-demo": "node_modules/.bin/webpack src",
     "start": "node_modules/.bin/webpack-dev-server --port 3001",
     "prepublish": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "yarn build && yarn start",
     "lint": "./node_modules/.bin/tslint assets/js/**/*.{ts,tsx}"
   },
   "keywords": [

@@ -95,7 +95,8 @@ class Example extends Component
         var randType = types[Math.floor(Math.random()*types.length)];
         const last = this.state.json.scenes.reverse()[0];
 
-        var scene = {start: last.start+5, end:last.start+10, type: randType, data: {"random":true}};
+        const start = (last && last.start) ? last.start : 0;
+        var scene = {start: start+5, end:start+10, type: randType, data: {"random":true}};
         this.state.json.scenes.push(scene);
         this.setState({ state: this.state });
     }
