@@ -22,6 +22,7 @@ export default class Scenario {
         for(const b in this.scenes){
             var scene = this.scenes[b];
             if (timer >= scene.params.start && timer < scene.params.start + 1 && scene.params.enabled) {
+            //if (timer >= scene.params.start && scene.params.enabled) {
                 var data = {
                     ...scene,
                     label: 'start_callback'

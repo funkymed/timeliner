@@ -39519,6 +39519,7 @@ var Scenario = function () {
         for (var b in this.scenes) {
             var scene = this.scenes[b];
             if (timer >= scene.params.start && timer < scene.params.start + 1 && scene.params.enabled) {
+                //if (timer >= scene.params.start && scene.params.enabled) {
                 var data = _extends({}, scene, {
                     label: 'start_callback'
                 });
@@ -39679,6 +39680,7 @@ var Timeline = function (_Component) {
         };
         _this.callback = _this.props.scene_callback ? _this.props.scene_callback : false;
         _this.editcallback = _this.props.editcallback ? _this.props.editcallback : false;
+        _this.getLastEventFromCurrentTime = _this.getLastEventFromCurrentTime.bind(_this);
         return _this;
     }
 
@@ -39723,6 +39725,20 @@ var Timeline = function (_Component) {
                 return a[property].localeCompare(b[property]);
             }
         };
+    };
+
+    Timeline.prototype.getLastEventFromCurrentTime = function getLastEventFromCurrentTime(time) {
+        var _time = time ? time : this.state.currentTime;
+        var lastCallBack = {};
+        for (var group in this.timelineItems) {
+            lastCallBack[group] = false;
+            for (var tt = 0; tt < this.timelineItems[group].length; tt++) {
+                if (this.timelineItems[group][tt].start <= _time) {
+                    lastCallBack[group] = this.timelineItems[group][tt];
+                }
+            }
+        }
+        return lastCallBack;
     };
 
     Timeline.prototype.componentDidMount = function componentDidMount() {
@@ -39915,7 +39931,6 @@ var Timeline = function (_Component) {
     };
 
     Timeline.prototype.render = function render() {
-        var startTime = this.props.startTime;
 
         this.scenario = new _Scenario2.default(this.state.startTime);
         this.timelineItems = [];
@@ -40016,7 +40031,7 @@ var Example = function (_Component) {
         };
         _this.fired = [];
         _this.state = {
-            currentTime: 0,
+            currentTime: 7,
             dateStart: false,
             isplaying: false,
             json: json,
@@ -40059,7 +40074,9 @@ var Example = function (_Component) {
         key: 'callback',
         value: function callback(data) {
             if (!this.fired[data.hash]) {
+                this.fired[data.hash] = true;
                 var callBackTime = (new Date().getTime() - this.dateStart) / 1000;
+                console.log(callBackTime, data);
                 document.getElementById("actual-scene").innerHTML = JSON.stringify(data);
             }
         }
@@ -40102,6 +40119,8 @@ var Example = function (_Component) {
                 var dateNow = new Date().getTime();
                 var currentTime = (dateNow - this.dateStart) / 1000;
                 this.setState({ currentTime: currentTime });
+                var lastEvents = this._timeline.getLastEventFromCurrentTime(currentTime);
+                console.log(lastEvents);
             }
             requestAnimationFrame(this.updateCurrentTime);
         }
@@ -40134,6 +40153,8 @@ var Example = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -40175,7 +40196,11 @@ var Example = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement(_index.Timeline, { rendering: this.state.rendering,
+                    _react2.default.createElement(_index.Timeline, {
+                        rendering: this.state.rendering,
+                        ref: function ref(c) {
+                            return _this2._timeline = c;
+                        },
                         editcallback: this.editcallback,
                         isplaying: this.state.isplaying,
                         data: this.state.json,

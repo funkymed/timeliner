@@ -36,6 +36,7 @@ var Scenario = function () {
         for (var b in this.scenes) {
             var scene = this.scenes[b];
             if (timer >= scene.params.start && timer < scene.params.start + 1 && scene.params.enabled) {
+                //if (timer >= scene.params.start && scene.params.enabled) {
                 var data = _extends({}, scene, {
                     label: 'start_callback'
                 });

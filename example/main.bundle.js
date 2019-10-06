@@ -32154,6 +32154,7 @@ var Timeline = function (_Component) {
         };
         _this.callback = _this.props.scene_callback ? _this.props.scene_callback : false;
         _this.editcallback = _this.props.editcallback ? _this.props.editcallback : false;
+        _this.getLastEventFromCurrentTime = _this.getLastEventFromCurrentTime.bind(_this);
         return _this;
     }
 
@@ -32206,6 +32207,21 @@ var Timeline = function (_Component) {
                     return a[property].localeCompare(b[property]);
                 }
             };
+        }
+    }, {
+        key: 'getLastEventFromCurrentTime',
+        value: function getLastEventFromCurrentTime(time) {
+            var _time = time ? time : this.state.currentTime;
+            var lastCallBack = {};
+            for (var group in this.timelineItems) {
+                lastCallBack[group] = false;
+                for (var tt = 0; tt < this.timelineItems[group].length; tt++) {
+                    if (this.timelineItems[group][tt].start <= _time) {
+                        lastCallBack[group] = this.timelineItems[group][tt];
+                    }
+                }
+            }
+            return lastCallBack;
         }
     }, {
         key: 'componentDidMount',
@@ -32610,6 +32626,7 @@ var Scenario = function () {
             for (var b in this.scenes) {
                 var scene = this.scenes[b];
                 if (timer >= scene.params.start && timer < scene.params.start + 1 && scene.params.enabled) {
+                    //if (timer >= scene.params.start && scene.params.enabled) {
                     var data = _extends({}, scene, {
                         label: 'start_callback'
                     });

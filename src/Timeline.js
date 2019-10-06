@@ -17,6 +17,7 @@ export default class Timeline extends Component {
         };
         this.callback = this.props.scene_callback ? this.props.scene_callback : false;
         this.editcallback = this.props.editcallback ? this.props.editcallback : false;
+        this.getLastEventFromCurrentTime = this.getLastEventFromCurrentTime.bind(this);
     }
 
 
@@ -62,6 +63,20 @@ export default class Timeline extends Component {
                 return a[property].localeCompare(b[property]);
             }
         }
+    }
+
+    getLastEventFromCurrentTime(time){
+        const _time = time ? time : this.state.currentTime;
+        let lastCallBack={};
+        for (const group in this.timelineItems){
+            lastCallBack[group]=false;
+            for (let tt = 0; tt < this.timelineItems[group].length; tt++) {
+                if(this.timelineItems[group][tt].start<=_time){
+                    lastCallBack[group]=this.timelineItems[group][tt];
+                }
+            }
+        }
+        return lastCallBack;
     }
 
     componentDidMount() {
@@ -231,6 +246,7 @@ export default class Timeline extends Component {
             const container = document.getElementById("funkymed-timeline");
             container.appendChild(containerTimeline);
         }
+
     }
 
     componentDidUpdate() {

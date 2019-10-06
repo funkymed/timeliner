@@ -6,7 +6,7 @@ let node = document.getElementById('app');
 
 class Example extends Component
 {
-
+    _timeline;
     constructor()
     {
         super();
@@ -34,7 +34,7 @@ class Example extends Component
         };
         this.fired = [];
         this.state = {
-            currentTime: 0,
+            currentTime: 7,
             dateStart: false,
             isplaying: false,
             json: json,
@@ -72,7 +72,9 @@ class Example extends Component
 
     callback(data){
         if(!this.fired[data.hash]){
+            this.fired[data.hash]=true;
             var callBackTime = (new Date().getTime()-this.dateStart)/1000;
+            console.log(callBackTime,data);
             document.getElementById("actual-scene").innerHTML=JSON.stringify(data);
         }
     }
@@ -110,6 +112,8 @@ class Example extends Component
             var dateNow = new Date().getTime();
             var currentTime = (dateNow - this.dateStart)/1000;
             this.setState({ currentTime });
+            const lastEvents = this._timeline.getLastEventFromCurrentTime(currentTime);
+            console.log(lastEvents);
         }
         requestAnimationFrame(this.updateCurrentTime);
     }
@@ -151,7 +155,9 @@ class Example extends Component
                 </div>
                 <br/>
                 <div>
-                    <Timeline rendering={this.state.rendering}
+                    <Timeline
+                              rendering={this.state.rendering}
+                              ref={c => this._timeline = c}
                               editcallback={this.editcallback}
                               isplaying={this.state.isplaying}
                               data={this.state.json}
