@@ -32443,6 +32443,9 @@ var Timeline = function (_Component) {
                         var data = _step2.value;
 
                         //data.end = data.end ? data.end : data.start+5;
+                        if (data.start <= 0) {
+                            data.start = 1;
+                        }
                         if (this.callback) {
                             data.callback = this.callback;
                         }

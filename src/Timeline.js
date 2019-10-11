@@ -267,6 +267,9 @@ export default class Timeline extends Component {
             scenes.sort(this.dynamicSort("type"));
             for (const data of scenes) {
                 //data.end = data.end ? data.end : data.start+5;
+                if(data.start<=0){
+                    data.start=1;
+                }
                 if (this.callback) {
                     data.callback = this.callback;
                 }

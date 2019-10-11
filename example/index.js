@@ -22,6 +22,7 @@ class Example extends Component
                 }
             },
             scenes: [
+                {start: -2000, type: "chat", data: {'a':'1','b':5}},
                 {start: 2, type: "chat", data: {'a':'1','b':5}},
                 {start: 5, type: "survey", data: {'a':'1','b':5}},
                 {start: 10, type: "slider", data: {'a':'1','b':5}},

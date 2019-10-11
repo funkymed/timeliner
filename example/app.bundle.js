@@ -39953,6 +39953,9 @@ var Timeline = function (_Component) {
                 var data = _ref2;
 
                 //data.end = data.end ? data.end : data.start+5;
+                if (data.start <= 0) {
+                    data.start = 1;
+                }
                 if (this.callback) {
                     data.callback = this.callback;
                 }
@@ -40027,7 +40030,7 @@ var Example = function (_Component) {
                     "survey": ["#30c84a", "#3dfb5d"]
                 }
             },
-            scenes: [{ start: 2, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 5, type: "survey", data: { 'a': '1', 'b': 5 } }, { start: 10, type: "slider", data: { 'a': '1', 'b': 5 } }, { start: 15, type: "slider", data: { 'a': '1', 'b': 5 } }, { start: 20, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 30, type: "title", data: { 'a': '1', 'b': 5 } }, { start: 33, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 35, type: "slider", data: { 'a': '1', 'b': 5 } }]
+            scenes: [{ start: -2000, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 2, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 5, type: "survey", data: { 'a': '1', 'b': 5 } }, { start: 10, type: "slider", data: { 'a': '1', 'b': 5 } }, { start: 15, type: "slider", data: { 'a': '1', 'b': 5 } }, { start: 20, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 30, type: "title", data: { 'a': '1', 'b': 5 } }, { start: 33, type: "chat", data: { 'a': '1', 'b': 5 } }, { start: 35, type: "slider", data: { 'a': '1', 'b': 5 } }]
         };
         _this.fired = [];
         _this.state = {
